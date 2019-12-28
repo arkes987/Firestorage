@@ -27,4 +27,16 @@
     <Folder Include="Converters\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="blowfish">
+      <HintPath>..\Dlls\Blowfish.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Core">
+      <HintPath>..\Dlls\IKVM.OpenJDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Runtime">
+      <HintPath>..\Dlls\IKVM.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

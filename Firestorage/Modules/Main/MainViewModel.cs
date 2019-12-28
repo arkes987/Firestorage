@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 using System.Linq;
+using Firestorage.Crypto;
 
 namespace Firestorage.Modules.Main
 {
     public class MainViewModel : NotifyObject
     {
         private FirebaseConnector _fireBaseConnector;
+        private ProtectDataEngine _protectDataEngine;
         private Query _query;
         private string _userId;
 
@@ -36,6 +38,7 @@ namespace Firestorage.Modules.Main
             _fireBaseConnector = new FirebaseConnector();
             _query = new Query(_fireBaseConnector);
             _userId = userId;
+            _protectDataEngine = new ProtectDataEngine(_userId);
             _query.ObserveCollection<SimpleAccount>(FetchAccountFromServer, _userId);
         }
 
@@ -100,7 +103,7 @@ namespace Firestorage.Modules.Main
 
         void AddCommandExecute(object param)
         {
-            var modifyWindow = new ModifyWindow(_query, null, _userId);
+            var modifyWindow = new ModifyWindow(_query, null, _userId, _protectDataEngine);
             modifyWindow.Show();
         }
 
@@ -140,7 +143,7 @@ namespace Firestorage.Modules.Main
         void ModifyCommandExecute(object param)
         {
             var obj = (FirebaseObject<SimpleAccount>)param;
-            var modifyWindow = new ModifyWindow(_query, obj, _userId);
+            var modifyWindow = new ModifyWindow(_query, obj, _userId, _protectDataEngine);
             modifyWindow.Show();
         }
 
@@ -159,7 +162,7 @@ namespace Firestorage.Modules.Main
         void CopyCommandExecute(object param)
         {
             var obj = (SimpleAccount)param;
-            Clipboard.SetText(obj.Password);
+            Clipboard.SetText(_protectDataEngine.Decrypt(obj.Password));
         }
 
         bool CopyCommandCanExecute(object param)

@@ -48,8 +48,6 @@ namespace Firestorage.Modules.Entry.Components
 
         void LoginCommandExecute(object param)
         {
-            var passwordBox = (PasswordBox)param;
-
             Task.Factory.StartNew(() =>
             {
                 var user = _query.GetByEmail<User>(Email).Result;
@@ -57,7 +55,7 @@ namespace Firestorage.Modules.Entry.Components
                 if (user.Count > 0)
                 {
                     var myUser = user.ElementAt(0);
-                    var encryptedPass = Encrypt.EncryptSHA512(passwordBox.Password);
+                    var encryptedPass = Encrypt.EncryptSHA512(((PasswordBox)param).Password);
                     if (myUser.Object.MasterPass == encryptedPass)
                     {
                         Application.Current.Dispatcher.Invoke(delegate
@@ -67,7 +65,11 @@ namespace Firestorage.Modules.Entry.Components
                             IsVisible = false;
                         });
                     }
+                    else
+                        MessageBox.Show("Wrong password.");
                 }
+                else
+                    MessageBox.Show("User not found.");
 
             });
         }

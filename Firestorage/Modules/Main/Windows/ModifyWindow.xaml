@@ -24,14 +24,15 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <Label Width="70" Content="Password:"/>
-                <PasswordBox FontSize="16" Width="200"/>
+                <PasswordBox x:Name="PasswordInput" FontSize="16" Width="200"/>
+                <Button Content="Show" Foreground="White" Background="#4caf50" BorderThickness="0" Width="30"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <Label Width="70" Content="Note:"/>
                 <TextBox Text="{Binding Account.Note, UpdateSourceTrigger=PropertyChanged}" FontSize="16" Width="200" Height="150" />
             </StackPanel>
         </StackPanel>
-        <Button Command="{Binding SaveCommand}" Content="Save" BorderThickness="0" Foreground="White" Background="#4caf50" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5">
+        <Button Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=PasswordInput}" Content="Save" BorderThickness="0" Foreground="White" Background="#4caf50" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5">
             <ei:Interaction.Triggers>
                 <ei:EventTrigger EventName="Click">
                     <ei:CallMethodAction MethodName="Close"
