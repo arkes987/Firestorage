@@ -8,10 +8,10 @@ namespace Firestorage.Modules.Main.Windows
 {
     public partial class ModifyWindow : Window
     {
-        public ModifyWindow(Query query, FirebaseObject<SimpleAccount> account, string userId, ProtectDataEngine protectDataEngine)
+        public ModifyWindow(Query query, string key, Account account, string userId, ProtectDataEngine protectDataEngine)
         {
             InitializeComponent();
-            DataContext = new ModifyViewModel(query, account, userId, protectDataEngine);
+            DataContext = new ModifyViewModel(query, key, account, userId, protectDataEngine);
         }
     }
 }

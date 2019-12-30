@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows;
 using System.Linq;
 using Firestorage.Crypto;
+using System.Threading;
 
 namespace Firestorage.Modules.Main
 {
@@ -20,8 +21,8 @@ namespace Firestorage.Modules.Main
         private Query _query;
         private string _userId;
 
-        private ObservableCollection<FirebaseObject<SimpleAccount>> _accounts;
-        public ObservableCollection<FirebaseObject<SimpleAccount>> Accounts
+        private ObservableCollection<FirebaseObject<Account>> _accounts;
+        public ObservableCollection<FirebaseObject<Account>> Accounts
         {
             get => _accounts;
             set
@@ -34,32 +35,15 @@ namespace Firestorage.Modules.Main
 
         public MainViewModel(string userId)
         {
-            Accounts = new ObservableCollection<FirebaseObject<SimpleAccount>>();
+            Accounts = new ObservableCollection<FirebaseObject<Account>>();
             _fireBaseConnector = new FirebaseConnector();
             _query = new Query(_fireBaseConnector);
             _userId = userId;
             _protectDataEngine = new ProtectDataEngine(_userId);
-            _query.ObserveCollection<SimpleAccount>(FetchAccountFromServer, _userId);
+            _query.ObserveCollection<Account>(FetchAccountFromServer, _userId);
         }
 
-        public void CreateSampleAcc()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                //var acc = new SimpleAccount()
-                //{
-                //    OwnerUserId = _userId,
-                //    Login = "arkadiusz.kina@smarterpod.eu",
-                //    Password = "asFFGEE!$24",
-                //    ModifyDate = DateTime.Now,
-                //    SaveDate = DateTime.Now,
-                //    Type = 0
-                //};
-                //_query.Add<Account>(acc);
-            });
-        }
-
-        public void FetchAccountFromServer(FirebaseEvent<SimpleAccount> recivedEvent)
+        public void FetchAccountFromServer(FirebaseEvent<Account> recivedEvent)
         {
             if (recivedEvent.Object == null)
                 return;
@@ -103,7 +87,7 @@ namespace Firestorage.Modules.Main
 
         void AddCommandExecute(object param)
         {
-            var modifyWindow = new ModifyWindow(_query, null, _userId, _protectDataEngine);
+            var modifyWindow = new ModifyWindow(_query, null, null, _userId, _protectDataEngine);
             modifyWindow.Show();
         }
 
@@ -124,7 +108,7 @@ namespace Firestorage.Modules.Main
             Task.Factory.StartNew(() =>
             {
                 var key = (string)param;
-                _query.DeleteByKey<SimpleAccount>(key);
+                _query.DeleteByKey<Account>(key);
             });
         }
 
@@ -142,8 +126,8 @@ namespace Firestorage.Modules.Main
 
         void ModifyCommandExecute(object param)
         {
-            var obj = (FirebaseObject<SimpleAccount>)param;
-            var modifyWindow = new ModifyWindow(_query, obj, _userId, _protectDataEngine);
+            var obj = (FirebaseObject<Account>)param;
+            var modifyWindow = new ModifyWindow(_query, obj.Key, obj.Object, _userId, _protectDataEngine);
             modifyWindow.Show();
         }
 
@@ -161,8 +145,25 @@ namespace Firestorage.Modules.Main
 
         void CopyCommandExecute(object param)
         {
-            var obj = (SimpleAccount)param;
-            Clipboard.SetText(_protectDataEngine.Decrypt(obj.Password));
+            var acc = (Account)param;
+
+            switch (acc.Type)
+            {
+                case Enums.AccountType.Simple:
+                    Clipboard.SetText(acc.Login);
+                    Thread.Sleep(1000);
+                    Clipboard.SetText(_protectDataEngine.Decrypt(acc.Password));
+                    break;
+                case Enums.AccountType.Password:
+                    Clipboard.SetText(_protectDataEngine.Decrypt(acc.Password));
+                    break;
+                case Enums.AccountType.Config:
+                    Clipboard.SetText(acc.Content);
+                    break;
+                case Enums.AccountType.Note:
+                    Clipboard.SetText(acc.Content);
+                    break;
+            }       
         }
 
         bool CopyCommandCanExecute(object param)

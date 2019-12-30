@@ -4,7 +4,7 @@ namespace Firestorage.Crypto
 {
     public class ProtectDataEngine
     {
-        private Blowfish blowfish;
+        private readonly Blowfish blowfish;
         public ProtectDataEngine(string key)
         {
             blowfish = new Blowfish(key);

@@ -3,26 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:Firestorage.Modules.Entry.Components"
+        xmlns:conv="clr-namespace:Firestorage.Converters"
+        xmlns:enums="clr-namespace:Firestorage.Enums"
         mc:Ignorable="d"
-        Title="Firestorage" Height="350" Width="600" ResizeMode="NoResize" Visibility="{Binding IsVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
+        Title="Firestorage" Height="260" Width="550" ResizeMode="NoResize" Visibility="{Binding IsVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
     <Grid>
         <StackPanel Orientation="Vertical">
-            <Label Content="Firestorage" HorizontalAlignment="Center" Margin="10" FontSize="20"/>
-            <!--<controls:Login Visibility="{Binding LoginPage, UpdateSourceTrigger=PropertyChanged}"/>
-            <controls:Register Visibility="{Binding RegisterPage, UpdateSourceTrigger=PropertyChanged}"/>-->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                <Label Content="Email address:" Width="105"/>
-                <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" x:Name="EmailInput" Width="300" FontSize="16"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                <Label Content="Master password:" Width="105"/>
-                <PasswordBox x:Name="PasswordInput" Width="300" FontSize="16"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Width="405">
-                <Button Content="Enter" HorizontalAlignment="Left" Width="290" Height="35" Margin="5" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=PasswordInput}"/>
-                <Button Content="Create account" Width="100" Height="35" Margin="5" Command="{Binding RegisterCommand}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="Firestorage" FontSize="25" VerticalAlignment="Center"/>
+                <Image Source="/Firestorage;component/Modules/Main/logo.png" Width="45" Height="50" VerticalAlignment="Center"/>
             </StackPanel>
 
+            <controls:Login Visibility="{Binding EntryViewType, Converter={conv:EnumToVisibilityConverter}, ConverterParameter={x:Static enums:EntryViewType.Login}}"/>
+            <controls:Register Visibility="{Binding EntryViewType, Converter={conv:EnumToVisibilityConverter}, ConverterParameter={x:Static enums:EntryViewType.Register}}" />
         </StackPanel>
 
     </Grid>

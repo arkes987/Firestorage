@@ -9,6 +9,7 @@ using Firestorage.Modules.Main;
 using System;
 using Firestorage.Crypto;
 using System.Windows.Controls;
+using Firestorage.Enums;
 
 namespace Firestorage.Modules.Entry.Components
 {
@@ -17,6 +18,19 @@ namespace Firestorage.Modules.Entry.Components
 
         private FirebaseConnector _fireBaseConnector;
         private Query _query;
+
+        private EntryViewType _entryViewType = EntryViewType.Login;
+        public EntryViewType EntryViewType
+        {
+            get => _entryViewType;
+            set
+            {
+                if (_entryViewType == value) return;
+                _entryViewType = value;
+                OnPropertyChanged(() => EntryViewType);
+            }
+        }
+
 
         private bool _isVisible = true;
         public bool IsVisible
@@ -29,6 +43,8 @@ namespace Firestorage.Modules.Entry.Components
                 OnPropertyChanged(() => IsVisible);
             }
         }
+
+        public string Name { get; set; }
 
         public string Email { get; set; } = "arkkin@icloud.com";
 
@@ -48,30 +64,8 @@ namespace Firestorage.Modules.Entry.Components
 
         void LoginCommandExecute(object param)
         {
-            Task.Factory.StartNew(() =>
-            {
-                var user = _query.GetByEmail<User>(Email).Result;
-
-                if (user.Count > 0)
-                {
-                    var myUser = user.ElementAt(0);
-                    var encryptedPass = Encrypt.EncryptSHA512(((PasswordBox)param).Password);
-                    if (myUser.Object.MasterPass == encryptedPass)
-                    {
-                        Application.Current.Dispatcher.Invoke(delegate
-                        {
-                            var mainWindow = new MainWindow(myUser.Key);
-                            mainWindow.Show();
-                            IsVisible = false;
-                        });
-                    }
-                    else
-                        MessageBox.Show("Wrong password.");
-                }
-                else
-                    MessageBox.Show("User not found.");
-
-            });
+            var encryptedPass = Encrypt.EncryptSHA512(((PasswordBox)param).Password);
+            TryAuthenticateUser(encryptedPass);
         }
 
         bool LoginCommandCanExecute(object param)
@@ -88,16 +82,7 @@ namespace Firestorage.Modules.Entry.Components
 
         void RegisterCommandExecute(object param)
         {
-            //var usr = new User()
-            //{
-            //    Email = "arkkin@icloud.com",
-            //    LastLogin = DateTime.Now,
-            //    MasterPass = Encrypt.EncryptInput(""),
-            //    PasswordTryCount = 0,
-            //    SaveDate = DateTime.Now
-            //};
-
-            //_query.Add(usr);
+            EntryViewType = EntryViewType.Register;
         }
 
         bool RegisterCommandCanExecute(object param)
@@ -106,5 +91,71 @@ namespace Firestorage.Modules.Entry.Components
         }
 
         #endregion
+
+        #region RegisterConfirm
+
+        RelayCommand _registerConfirmCommand;
+        public ICommand RegisterConfirmCommand => _registerConfirmCommand ?? (_registerConfirmCommand = new RelayCommand(RegisterConfirmCommandExecute, RegisterConfirmCommandCanExecute));
+
+        void RegisterConfirmCommandExecute(object param)
+        {
+            if (string.IsNullOrEmpty(((PasswordBox)param).Password))
+            {
+                MessageBox.Show("Plase type correct password.");
+                return;
+            }
+
+            var encryptedPass = Encrypt.EncryptSHA512(((PasswordBox)param).Password);
+            var usr = new User()
+            {
+                Email = Email,
+                LastLogin = DateTime.Now,
+                MasterPass = encryptedPass,
+                PasswordTryCount = 0,
+                SaveDate = DateTime.Now
+            };
+
+            _query.Add(usr);
+
+            TryAuthenticateUser(encryptedPass);
+        }
+
+        bool RegisterConfirmCommandCanExecute(object param)
+        {
+            return !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Name);
+        }
+
+        #endregion
+
+        private void TryAuthenticateUser(string encryptedPswd)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                var user = _query.GetByEmail<User>(Email).Result;
+
+                if (user.Count > 0)
+                {
+                    var myUser = user.ElementAt(0);
+                    if (myUser.Object.MasterPass == encryptedPswd)
+                    {
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+                            var mainWindow = new MainWindow(myUser.Key);
+                            mainWindow.Show();
+                            IsVisible = false;
+                            EntryViewType = EntryViewType.Login;
+                        });
+                    }
+                    else
+                    {
+                        MessageBox.Show("Wrong password.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("User not found.");
+                }
+            });
+        }
     }
 }
