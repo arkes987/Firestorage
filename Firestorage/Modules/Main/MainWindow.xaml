@@ -4,9 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Firestorage.Modules.Main"
+        xmlns:enums="clr-namespace:Firestorage.Enums"
         xmlns:components="clr-namespace:Firestorage.Modules.Main.Components"
         mc:Ignorable="d"
-        Title="Firestorage" Height="450" Width="800">
+        Title="Firestorage" Height="{Binding FormHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="{Binding FormWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
     <Grid>
         <StackPanel Orientation="Vertical">
             <Grid Background="#4caf50" Height="45" Margin="0, 0, 0, 5">
@@ -14,34 +15,25 @@
                     <Label Content="Firestorage" Foreground="White" FontSize="25"/>
                     <Image Source="logo.png" Height="38" Width="35"/>
                 </StackPanel>
+                <Button Command="{Binding LockCommand}" Width="30" Background="Transparent" BorderThickness="0" Content="Lock" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0, 0, 15, 0"/>
             </Grid>
             <StackPanel Orientation="Horizontal">
                 <StackPanel Orientation="Vertical" Width="200" Margin="5">
-                    <Border Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" CornerRadius="5,5,5,5" Margin="5">
-                        <Grid Width="160" Height="45">
-                            <Label FontSize="16" Content="All Items" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-                    <Border Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" CornerRadius="5,5,5,5" Margin="5">
-                        <Grid Width="160" Height="45">
-                            <Label FontSize="16" Content="Accounts" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-                    <Border Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" CornerRadius="5,5,5,5" Margin="5">
-                        <Grid Width="160" Height="45">
-                            <Label FontSize="16" Content="Passwords" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-                    <Border Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" CornerRadius="5,5,5,5" Margin="5">
-                        <Grid Width="160" Height="45">
-                            <Label FontSize="16" Content="Configs" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-                    <Border Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" CornerRadius="5,5,5,5" Margin="5">
-                        <Grid Width="160" Height="45">
-                            <Label FontSize="16" Content="Notes" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
+                    <Button Command="{Binding ChangeAccTypeViewCommand}" CommandParameter="{x:Static enums:AccountTypeView.All}" Width="190" Height="45" Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" Margin="5">
+                        <Label FontSize="16" Content="All Items" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+                    <Button Command="{Binding ChangeAccTypeViewCommand}" CommandParameter="{x:Static enums:AccountTypeView.SimpleAccount}" Width="190" Height="45" Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" Margin="5">
+                        <Label FontSize="16" Content="Accounts" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+                    <Button Command="{Binding ChangeAccTypeViewCommand}" CommandParameter="{x:Static enums:AccountTypeView.SimplePassword}" Width="190" Height="45" Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" Margin="5">
+                        <Label FontSize="16" Content="Passwords" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+                    <Button Command="{Binding ChangeAccTypeViewCommand}" CommandParameter="{x:Static enums:AccountTypeView.Config}" Width="190" Height="45" Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" Margin="5">
+                        <Label FontSize="16" Content="Configs" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+                    <Button Command="{Binding ChangeAccTypeViewCommand}" CommandParameter="{x:Static enums:AccountTypeView.Note}" Width="190" Height="45" Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" Margin="5">
+                        <Label FontSize="16" Content="Notes" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
                 </StackPanel>
                 <Separator>
                     <Separator.LayoutTransform>
@@ -49,7 +41,12 @@
                     </Separator.LayoutTransform>
                 </Separator>
                 <StackPanel Orientation="Vertical" Margin="5">
-                    <ItemsControl ItemsSource="{Binding Accounts}">
+                    <ItemsControl ItemsSource="{Binding Accounts}" MaxWidth="{Binding WrapPanelWidth, UpdateSourceTrigger=PropertyChanged}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <components:SimpleAccountTile/>

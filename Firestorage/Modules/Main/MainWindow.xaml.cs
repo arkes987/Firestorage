@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace Firestorage.Modules.Main
 {
@@ -8,6 +9,11 @@ namespace Firestorage.Modules.Main
         {
             InitializeComponent();
             DataContext = new MainViewModel(userId);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }

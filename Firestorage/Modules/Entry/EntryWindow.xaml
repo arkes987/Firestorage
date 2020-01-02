@@ -7,7 +7,7 @@
         xmlns:conv="clr-namespace:Firestorage.Converters"
         xmlns:enums="clr-namespace:Firestorage.Enums"
         mc:Ignorable="d"
-        Title="Firestorage" Height="260" Width="550" ResizeMode="NoResize" Visibility="{Binding IsVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
+        Title="Firestorage" Height="260" Width="550" ResizeMode="NoResize" Visibility="{Binding IsVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}" WindowStartupLocation="CenterScreen">
     <Grid>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

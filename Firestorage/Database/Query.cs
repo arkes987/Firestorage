@@ -1,6 +1,7 @@
 ﻿using Firebase.Database;
 using Firebase.Database.Query;
 using Firebase.Database.Streaming;
+using Firestorage.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -43,10 +44,19 @@ namespace Firestorage.Database
             return result;
         }
 
-        public void ObserveCollection<T>(Action<FirebaseEvent<T>> callback, string userOwnerKey)
-        {
-            var result = _connection.Instance.Child(typeof(T).Name).OrderBy("OwnerUserId").EqualTo(userOwnerKey).AsObservable<T>().Subscribe(obj => callback(obj));
+        public void ObserveCollection<T>(Action<FirebaseEvent<T>> callback, string userOwnerKey, AccountTypeView accountType)
+        {         
+            if(accountType == AccountTypeView.All)
+            {
+                var result = _connection.Instance.Child(typeof(T).Name).OrderBy("OwnerUserId").EqualTo(userOwnerKey).AsObservable<T>().Subscribe(obj => callback(obj));
+            }
+            else
+            {
+                var accType = (int)accountType;
+                var result = _connection.Instance.Child(typeof(T).Name).OrderBy("OwnerUserId").EqualTo(userOwnerKey).EqualTo(accType).AsObservable<T>().Subscribe(obj => callback(obj));
+            }     
         }
+
 
         public async void DeleteByKey<T>(string key)
         {

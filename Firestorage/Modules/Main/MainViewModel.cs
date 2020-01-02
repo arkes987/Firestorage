@@ -11,6 +11,7 @@ using System.Windows;
 using System.Linq;
 using Firestorage.Crypto;
 using System.Threading;
+using Firestorage.Enums;
 
 namespace Firestorage.Modules.Main
 {
@@ -20,6 +21,46 @@ namespace Firestorage.Modules.Main
         private ProtectDataEngine _protectDataEngine;
         private Query _query;
         private string _userId;
+
+        public AccountTypeView AccountTypeView { get; set; } = AccountTypeView.All;
+
+        private int _wrapPanelWidth = 600;
+        public int WrapPanelWidth
+        {
+            get => _wrapPanelWidth;
+            set
+            {
+                var calculatedWidth = _formWidth - 200;
+                if (_wrapPanelWidth == calculatedWidth) return;
+                _wrapPanelWidth = calculatedWidth;
+                OnPropertyChanged(() => WrapPanelWidth);
+            }
+        }
+
+        private int _formWidth = 800;
+        public int FormWidth
+        {
+            get => _formWidth;
+            set
+            {
+                if (_formWidth == value) return;
+                _formWidth = value;
+                OnPropertyChanged(() => FormWidth);
+                WrapPanelWidth = FormWidth;
+            }
+        }
+
+        private int _formHeight = 450;
+        public int FormHeight
+        {
+            get => _formHeight;
+            set
+            {
+                if (_formHeight == value) return;
+                _formHeight = value;
+                OnPropertyChanged(() => FormHeight);
+            }
+        }
 
         private ObservableCollection<FirebaseObject<Account>> _accounts;
         public ObservableCollection<FirebaseObject<Account>> Accounts
@@ -40,7 +81,7 @@ namespace Firestorage.Modules.Main
             _query = new Query(_fireBaseConnector);
             _userId = userId;
             _protectDataEngine = new ProtectDataEngine(_userId);
-            _query.ObserveCollection<Account>(FetchAccountFromServer, _userId);
+            _query.ObserveCollection<Account>(callback => FetchAccountFromServer(callback), _userId, AccountTypeView);
         }
 
         public void FetchAccountFromServer(FirebaseEvent<Account> recivedEvent)
@@ -149,24 +190,60 @@ namespace Firestorage.Modules.Main
 
             switch (acc.Type)
             {
-                case Enums.AccountType.Simple:
+                case AccountType.Simple:
                     Clipboard.SetText(acc.Login);
                     Thread.Sleep(1000);
                     Clipboard.SetText(_protectDataEngine.Decrypt(acc.Password));
                     break;
-                case Enums.AccountType.Password:
+                case AccountType.Password:
                     Clipboard.SetText(_protectDataEngine.Decrypt(acc.Password));
                     break;
-                case Enums.AccountType.Config:
+                case AccountType.Config:
                     Clipboard.SetText(acc.Content);
                     break;
-                case Enums.AccountType.Note:
+                case AccountType.Note:
                     Clipboard.SetText(acc.Content);
                     break;
-            }       
+            }
         }
 
         bool CopyCommandCanExecute(object param)
+        {
+            return true;
+        }
+
+        #endregion
+
+        #region Lock
+
+        RelayCommand _lockCommand;
+        public ICommand LockCommand => _lockCommand ?? (_lockCommand = new RelayCommand(LockCommandExecute, LockCommandCanExecute));
+
+        void LockCommandExecute(object param)
+        {
+
+        }
+
+        bool LockCommandCanExecute(object param)
+        {
+            return true;
+        }
+
+        #endregion
+
+        #region ChangeAccTypeView
+
+        RelayCommand _changeAccTypeViewCommand;
+        public ICommand ChangeAccTypeViewCommand => _changeAccTypeViewCommand ?? (_changeAccTypeViewCommand = new RelayCommand(ChangeAccTypeViewCommandExecute, ChangeAccTypeViewCommandCanExecute));
+
+        void ChangeAccTypeViewCommandExecute(object param)
+        {
+            var accountType = (AccountTypeView)param;
+
+            AccountTypeView = accountType;
+        }
+
+        bool ChangeAccTypeViewCommandCanExecute(object param)
         {
             return true;
         }
