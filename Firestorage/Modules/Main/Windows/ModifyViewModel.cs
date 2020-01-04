@@ -62,5 +62,24 @@ namespace Firestorage.Modules.Main.Windows
 
         #endregion
 
+        #region Generate
+
+        RelayCommand _generateCommand;
+        public ICommand GenerateCommand => _generateCommand ?? (_generateCommand = new RelayCommand(GenerateCommandExecute, GenerateCommandCanExecute));
+
+        void GenerateCommandExecute(object param)
+        {
+            string pswd = string.Empty;
+            var passwordGenerator = new PasswordGenerator(ref pswd);
+            passwordGenerator.Show();
+        }
+
+        bool GenerateCommandCanExecute(object param)
+        {
+            return true;
+        }
+
+        #endregion
+
     }
 }
