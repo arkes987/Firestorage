@@ -9,8 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Modules\Main\lock.png" />
     <None Remove="Modules\Main\logo.png" />
     <None Remove="Modules\Main\plus.png" />
+    <None Remove="Modules\Main\Windows\save.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,8 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Modules\Main\lock.png" />
     <Resource Include="Modules\Main\logo.png" />
     <Resource Include="Modules\Main\plus.png" />
+    <Resource Include="Modules\Main\Windows\save.png" />
   </ItemGroup>
 
   <ItemGroup>

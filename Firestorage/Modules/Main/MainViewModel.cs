@@ -24,19 +24,6 @@ namespace Firestorage.Modules.Main
 
         public AccountTypeView AccountTypeView { get; set; } = AccountTypeView.All;
 
-        private int _wrapPanelWidth = 600;
-        public int WrapPanelWidth
-        {
-            get => _wrapPanelWidth;
-            set
-            {
-                var calculatedWidth = _formWidth - 200;
-                if (_wrapPanelWidth == calculatedWidth) return;
-                _wrapPanelWidth = calculatedWidth;
-                OnPropertyChanged(() => WrapPanelWidth);
-            }
-        }
-
         private int _formWidth = 800;
         public int FormWidth
         {
@@ -46,7 +33,6 @@ namespace Firestorage.Modules.Main
                 if (_formWidth == value) return;
                 _formWidth = value;
                 OnPropertyChanged(() => FormWidth);
-                WrapPanelWidth = FormWidth;
             }
         }
 
@@ -81,7 +67,7 @@ namespace Firestorage.Modules.Main
             _query = new Query(_fireBaseConnector);
             _userId = userId;
             _protectDataEngine = new ProtectDataEngine(_userId);
-            _query.ObserveCollection<Account>(callback => FetchAccountFromServer(callback), _userId, AccountTypeView);
+            _query.ObserveCollection<Account>(callback => FetchAccountFromServer(callback), _userId);
         }
 
         public void FetchAccountFromServer(FirebaseEvent<Account> recivedEvent)
@@ -119,6 +105,8 @@ namespace Firestorage.Modules.Main
                         Accounts.Add(recivedEvent);
                 });
             }
+
+            Accounts = new ObservableCollection<FirebaseObject<Account>>(Accounts.OrderBy(acc => acc.Object.Type));
         }
 
         #region Add
@@ -225,25 +213,6 @@ namespace Firestorage.Modules.Main
         }
 
         bool LockCommandCanExecute(object param)
-        {
-            return true;
-        }
-
-        #endregion
-
-        #region ChangeAccTypeView
-
-        RelayCommand _changeAccTypeViewCommand;
-        public ICommand ChangeAccTypeViewCommand => _changeAccTypeViewCommand ?? (_changeAccTypeViewCommand = new RelayCommand(ChangeAccTypeViewCommandExecute, ChangeAccTypeViewCommandCanExecute));
-
-        void ChangeAccTypeViewCommandExecute(object param)
-        {
-            var accountType = (AccountTypeView)param;
-
-            AccountTypeView = accountType;
-        }
-
-        bool ChangeAccTypeViewCommandCanExecute(object param)
         {
             return true;
         }

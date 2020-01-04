@@ -15,45 +15,26 @@
                     <Label Content="Firestorage" Foreground="White" FontSize="25"/>
                     <Image Source="logo.png" Height="38" Width="35"/>
                 </StackPanel>
-                <Button Command="{Binding LockCommand}" Width="30" Background="Transparent" BorderThickness="0" Content="Lock" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0, 0, 15, 0"/>
+                <Button Command="{Binding LockCommand}" Foreground="White" Width="30" Background="Transparent" BorderThickness="0" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0, 0, 15, 0">
+                    <StackPanel>
+                        <Image Source="lock.png" Height="30" Width="30" />
+                    </StackPanel>
+                </Button>
             </Grid>
-            <StackPanel Orientation="Horizontal">
-                <StackPanel Orientation="Vertical" Width="200" Margin="5">
-                    <Button Command="{Binding ChangeAccTypeViewCommand}" CommandParameter="{x:Static enums:AccountTypeView.All}" Width="190" Height="45" Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" Margin="5">
-                        <Label FontSize="16" Content="All Items" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Button>
-                    <Button Command="{Binding ChangeAccTypeViewCommand}" CommandParameter="{x:Static enums:AccountTypeView.SimpleAccount}" Width="190" Height="45" Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" Margin="5">
-                        <Label FontSize="16" Content="Accounts" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Button>
-                    <Button Command="{Binding ChangeAccTypeViewCommand}" CommandParameter="{x:Static enums:AccountTypeView.SimplePassword}" Width="190" Height="45" Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" Margin="5">
-                        <Label FontSize="16" Content="Passwords" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Button>
-                    <Button Command="{Binding ChangeAccTypeViewCommand}" CommandParameter="{x:Static enums:AccountTypeView.Config}" Width="190" Height="45" Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" Margin="5">
-                        <Label FontSize="16" Content="Configs" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Button>
-                    <Button Command="{Binding ChangeAccTypeViewCommand}" CommandParameter="{x:Static enums:AccountTypeView.Note}" Width="190" Height="45" Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" Margin="5">
-                        <Label FontSize="16" Content="Notes" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Button>
-                </StackPanel>
-                <Separator>
-                    <Separator.LayoutTransform>
-                        <RotateTransform Angle="90" />
-                    </Separator.LayoutTransform>
-                </Separator>
-                <StackPanel Orientation="Vertical" Margin="5">
-                    <ItemsControl ItemsSource="{Binding Accounts}" MaxWidth="{Binding WrapPanelWidth, UpdateSourceTrigger=PropertyChanged}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <components:SimpleAccountTile/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
+
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="5">
+                <ItemsControl ItemsSource="{Binding Accounts}" MaxWidth="{Binding FormWidth, UpdateSourceTrigger=PropertyChanged}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <components:SimpleAccountTile/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </StackPanel>
         <Button Width="60" Height="35" HorizontalAlignment="Right" BorderThickness="0" Background="#4caf50" Foreground="White" VerticalAlignment="Bottom" Margin="5" Command="{Binding AddCommand}">

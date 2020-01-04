@@ -17,8 +17,8 @@
                 <PasswordBox x:Name="PasswordInput" Width="300" FontSize="16"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Width="405">
-                <Button Content="Enter" HorizontalAlignment="Left" Width="290" Height="35" Margin="5" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=PasswordInput}"/>
-                <Button Content="Create account" Width="100" Height="35" Margin="5" Command="{Binding RegisterCommand}"/>
+                <Button Content="Sign in" FontSize="16" BorderThickness="0" Background="#4caf50" Foreground="White" HorizontalAlignment="Left" Width="270" Height="35" Margin="5" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=PasswordInput}"/>
+                <Button Content="Sign up" FontSize="16" BorderThickness="0" Background="#4caf50" Foreground="White" Width="120" Height="35" Margin="5" Command="{Binding RegisterCommand}"/>
             </StackPanel>
 
         </StackPanel>

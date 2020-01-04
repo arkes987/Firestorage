@@ -20,7 +20,7 @@
                 <Label Content="Master password:" Width="105"/>
                 <PasswordBox x:Name="PasswordInput" Width="300" FontSize="16"/>
             </StackPanel>
-            <Button Content="Register" Command="{Binding RegisterConfirmCommand}" CommandParameter="{Binding ElementName=PasswordInput}" Height="35" Margin="5" Width="405"/>
+            <Button Content="Register me" FontSize="16" BorderThickness="0" Background="#4caf50" Foreground="White" Command="{Binding RegisterConfirmCommand}" CommandParameter="{Binding ElementName=PasswordInput}" Height="35" Margin="5" Width="405"/>
         </StackPanel>
     </Grid>
 </UserControl>
