@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Firestorage", "Firestorage\Firestorage.csproj", "{1060E65C-290F-437D-99D3-A7B1933B9B42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Firestorage.TEST", "Firestorage.TEST\Firestorage.TEST.csproj", "{4FE13E86-2D47-4EF1-949D-9809D4962A07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Firestorage.Test", "Firestorage.TEST\Firestorage.Test.csproj", "{4FE13E86-2D47-4EF1-949D-9809D4962A07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Firestorage.Noti", "Firestorage.Noti\Firestorage.Noti.csproj", "{98C22826-B228-4B87-A905-8B022B2A93BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4FE13E86-2D47-4EF1-949D-9809D4962A07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FE13E86-2D47-4EF1-949D-9809D4962A07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FE13E86-2D47-4EF1-949D-9809D4962A07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98C22826-B228-4B87-A905-8B022B2A93BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98C22826-B228-4B87-A905-8B022B2A93BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98C22826-B228-4B87-A905-8B022B2A93BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98C22826-B228-4B87-A905-8B022B2A93BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

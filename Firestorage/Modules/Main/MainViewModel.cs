@@ -134,11 +134,14 @@ namespace Firestorage.Modules.Main
 
         void DeleteCommandExecute(object param)
         {
-            Task.Factory.StartNew(() =>
+            if (MessageBox.Show("Sure to delete?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                var key = (string)param;
-                _query.DeleteByKey<Account>(key);
-            });
+                Task.Factory.StartNew(() =>
+                {
+                    var key = (string)param;
+                    _query.DeleteByKey<Account>(key);
+                });
+            }
         }
 
         bool DeleteCommandCanExecute(object param)
@@ -173,7 +176,7 @@ namespace Firestorage.Modules.Main
         public ICommand CopyCommand => _copyCommand ?? (_copyCommand = new RelayCommand(CopyCommandExecute, CopyCommandCanExecute));
 
         void CopyCommandExecute(object param)
-        {
+        {            
             var acc = (Account)param;
 
             switch (acc.Type)
@@ -193,6 +196,7 @@ namespace Firestorage.Modules.Main
                     Clipboard.SetText(acc.Content);
                     break;
             }
+            Noti.App.ShowNoti(Noti.Enums.NotificationType.Success);
         }
 
         bool CopyCommandCanExecute(object param)

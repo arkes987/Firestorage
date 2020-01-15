@@ -43,4 +43,8 @@
     <Folder Include="Helpers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Firestorage.Noti\Firestorage.Noti.csproj" />
+  </ItemGroup>
+
 </Project>
