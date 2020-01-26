@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Firestorage.Libs
+namespace Firestorage.Core
 {
     public class NotifyObject : INotifyPropertyChanged, IDisposable
     {
@@ -20,6 +20,7 @@ namespace Firestorage.Libs
             if (PropertyChanged != null)
             {
                 var delgates = PropertyChanged.GetInvocationList().ToList();
+
                 foreach (var del in delgates)
                     PropertyChanged -= (PropertyChangedEventHandler)del;
             }
@@ -31,8 +32,8 @@ namespace Firestorage.Libs
         {
             try
             {
-                System.Threading.Interlocked.CompareExchange(ref PropertyChanged, null, null)?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
+                var handler = System.Threading.Interlocked.CompareExchange(ref PropertyChanged, null, null);
+                handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
             catch (Exception ex)
             {
@@ -44,8 +45,8 @@ namespace Firestorage.Libs
         {
             try
             {
-                System.Threading.Interlocked.CompareExchange(ref PropertyChanged, null, null)?.Invoke(this, new PropertyChangedEventArgs(extension.GetPropertyName()));
-
+                var handler = System.Threading.Interlocked.CompareExchange(ref PropertyChanged, null, null);
+                handler?.Invoke(this, new PropertyChangedEventArgs(extension.GetPropertyName()));
             }
             catch (Exception ex)
             {

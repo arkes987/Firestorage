@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Firestorage.Core\Firestorage.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Views\close.png" />
     <Resource Include="Views\logo.png" />
   </ItemGroup>

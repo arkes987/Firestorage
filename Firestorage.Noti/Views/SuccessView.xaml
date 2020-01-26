@@ -7,7 +7,7 @@
     <Grid>
         <StackPanel Orientation="Vertical">
             <Label Content="Firestorage"/>
-            <Label Content="Successfuly saved to clipboard" FontSize="20"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label Content="{Binding NotificationText, UpdateSourceTrigger=PropertyChanged}" FontSize="20"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </StackPanel>
         <Grid Background="#4caf50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="380" Height="10"></Grid>
     </Grid>

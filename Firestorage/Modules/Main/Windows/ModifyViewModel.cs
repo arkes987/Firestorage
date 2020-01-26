@@ -1,7 +1,7 @@
-﻿using Firestorage.Crypto;
+﻿using Firestorage.Core;
+using Firestorage.Crypto;
 using Firestorage.Database;
 using Firestorage.Database.Structure;
-using Firestorage.Libs;
 using System;
 using System.Windows.Controls;
 using System.Windows.Input;

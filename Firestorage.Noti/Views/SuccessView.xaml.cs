@@ -4,9 +4,10 @@ namespace Firestorage.Noti.Views
 {
     public partial class SuccessView : Window
     {
-        public SuccessView()
+        public SuccessView(string text)
         {
             InitializeComponent();
+            DataContext = new NotificationViewModel(text);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

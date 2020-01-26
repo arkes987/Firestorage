@@ -2,7 +2,6 @@
 using Firebase.Database.Streaming;
 using Firestorage.Database;
 using Firestorage.Database.Structure;
-using Firestorage.Libs;
 using Firestorage.Modules.Main.Windows;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -12,6 +11,7 @@ using System.Linq;
 using Firestorage.Crypto;
 using System.Threading;
 using Firestorage.Enums;
+using Firestorage.Core;
 
 namespace Firestorage.Modules.Main
 {
@@ -196,7 +196,7 @@ namespace Firestorage.Modules.Main
                     Clipboard.SetText(acc.Content);
                     break;
             }
-            Noti.App.ShowNoti(Noti.Enums.NotificationType.Success);
+            Noti.App.ShowNoti("Successfully copied item", Noti.Enums.NotificationType.Success);
         }
 
         bool CopyCommandCanExecute(object param)

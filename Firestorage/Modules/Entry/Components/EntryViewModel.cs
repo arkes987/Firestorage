@@ -1,6 +1,5 @@
 ﻿using Firestorage.Database;
 using Firestorage.Database.Structure;
-using Firestorage.Libs;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Linq;
@@ -10,6 +9,7 @@ using System;
 using Firestorage.Crypto;
 using System.Windows.Controls;
 using Firestorage.Enums;
+using Firestorage.Core;
 
 namespace Firestorage.Modules.Entry.Components
 {

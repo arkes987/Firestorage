@@ -40,10 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\Firestorage.Core\Firestorage.Core.csproj" />
     <ProjectReference Include="..\Firestorage.Noti\Firestorage.Noti.csproj" />
   </ItemGroup>
 

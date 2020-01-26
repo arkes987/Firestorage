@@ -1,19 +1,21 @@
-﻿using System;
+﻿using Catel.MVVM;
+using System;
 using System.Windows.Input;
 
-namespace Firestorage.Libs
+
+namespace Firestorage.Core
 {
     public abstract class CommandBase : ICommand
     {
         public event EventHandler CanExecuteChanged
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            add { System.Windows.Input.CommandManager.RequerySuggested += value; }
+            remove { System.Windows.Input.CommandManager.RequerySuggested -= value; }
         }
 
         public void OnCanExecuteChanged()
         {
-            CommandManager.InvalidateRequerySuggested();
+            System.Windows.Input.CommandManager.InvalidateRequerySuggested();
         }
 
         public virtual bool CanExecute(object parameter)

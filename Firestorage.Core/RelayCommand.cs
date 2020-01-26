@@ -1,29 +1,29 @@
 ﻿using System;
 
-namespace Firestorage.Libs
+namespace Firestorage.Core
 {
     public class RelayCommand : CommandBase
     {
-        private readonly Action<object> execute;
-        private readonly Func<object, bool> canExecute;
+        private readonly Action<object> _execute;
+        private readonly Func<object, bool> _canExecute;
 
         public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
         {
             if (canExecute == null)
                 canExecute = (o) => true;
 
-            this.execute = execute ?? throw new ArgumentNullException("execute");
-            this.canExecute = canExecute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute;
         }
 
         public override bool CanExecute(object parameter)
         {
-            return canExecute(parameter);
+            return _canExecute(parameter);
         }
 
         protected override void OnExecute(object parameter)
         {
-            execute(parameter);
+            _execute(parameter);
         }
     }
 }
