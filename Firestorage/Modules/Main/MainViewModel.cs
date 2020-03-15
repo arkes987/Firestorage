@@ -17,10 +17,10 @@ namespace Firestorage.Modules.Main
 {
     public class MainViewModel : NotifyObject
     {
-        private FirebaseConnector _fireBaseConnector;
-        private ProtectDataEngine _protectDataEngine;
-        private Query _query;
-        private string _userId;
+        private readonly FirebaseConnector _fireBaseConnector;
+        private readonly ProtectDataEngine _protectDataEngine;
+        private readonly Query _query;
+        private readonly string _userId;
 
         public AccountTypeView AccountTypeView { get; set; } = AccountTypeView.All;
 
@@ -67,7 +67,7 @@ namespace Firestorage.Modules.Main
             _query = new Query(_fireBaseConnector);
             _userId = userId;
             _protectDataEngine = new ProtectDataEngine(_userId);
-            _query.ObserveCollection<Account>(callback => FetchAccountFromServer(callback), _userId);
+            _query.ObserveCollection<Account>(FetchAccountFromServer, _userId);
         }
 
         public void FetchAccountFromServer(FirebaseEvent<Account> recivedEvent)
@@ -77,7 +77,7 @@ namespace Firestorage.Modules.Main
 
             if (recivedEvent.EventType == FirebaseEventType.Delete)
             {
-                App.Current.Dispatcher.Invoke(delegate
+                Application.Current.Dispatcher.Invoke(delegate
                 {
                     foreach (var account in Accounts)
                     {
@@ -91,7 +91,7 @@ namespace Firestorage.Modules.Main
             }
             else if (recivedEvent.EventType == FirebaseEventType.InsertOrUpdate)
             {
-                App.Current.Dispatcher.Invoke(delegate
+                Application.Current.Dispatcher.Invoke(delegate
                 {
                     recivedEvent.Object.DeleteCommand = DeleteCommand;
                     recivedEvent.Object.ModifyCommand = ModifyCommand;
@@ -112,7 +112,7 @@ namespace Firestorage.Modules.Main
         #region Add
 
         RelayCommand _addCommand;
-        public ICommand AddCommand => _addCommand ?? (_addCommand = new RelayCommand(AddCommandExecute, AddCommandCanExecute));
+        public ICommand AddCommand => _addCommand ??= new RelayCommand(AddCommandExecute, AddCommandCanExecute);
 
         void AddCommandExecute(object param)
         {
@@ -130,7 +130,7 @@ namespace Firestorage.Modules.Main
         #region Delete
 
         RelayCommand _deleteCommand;
-        public ICommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(DeleteCommandExecute, DeleteCommandCanExecute));
+        public ICommand DeleteCommand => _deleteCommand ??= new RelayCommand(DeleteCommandExecute, DeleteCommandCanExecute);
 
         void DeleteCommandExecute(object param)
         {
@@ -154,7 +154,7 @@ namespace Firestorage.Modules.Main
         #region Modify
 
         RelayCommand _modifyCommand;
-        public ICommand ModifyCommand => _modifyCommand ?? (_modifyCommand = new RelayCommand(ModifyCommandExecute, ModifyCommandCanExecute));
+        public ICommand ModifyCommand => _modifyCommand ??= new RelayCommand(ModifyCommandExecute, ModifyCommandCanExecute);
 
         void ModifyCommandExecute(object param)
         {
@@ -173,7 +173,7 @@ namespace Firestorage.Modules.Main
         #region Copy
 
         RelayCommand _copyCommand;
-        public ICommand CopyCommand => _copyCommand ?? (_copyCommand = new RelayCommand(CopyCommandExecute, CopyCommandCanExecute));
+        public ICommand CopyCommand => _copyCommand ??= new RelayCommand(CopyCommandExecute, CopyCommandCanExecute);
 
         void CopyCommandExecute(object param)
         {            
@@ -209,7 +209,7 @@ namespace Firestorage.Modules.Main
         #region Lock
 
         RelayCommand _lockCommand;
-        public ICommand LockCommand => _lockCommand ?? (_lockCommand = new RelayCommand(LockCommandExecute, LockCommandCanExecute));
+        public ICommand LockCommand => _lockCommand ??= new RelayCommand(LockCommandExecute, LockCommandCanExecute);
 
         void LockCommandExecute(object param)
         {

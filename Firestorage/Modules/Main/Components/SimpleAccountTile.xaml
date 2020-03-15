@@ -6,19 +6,43 @@
              xmlns:local="clr-namespace:Firestorage.Modules.Main.Components"
              xmlns:main="clr-namespace:Firestorage.Modules.Main"
              xmlns:conv="clr-namespace:Firestorage.Converters"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="90" d:DesignWidth="175" MaxWidth="150" MaxHeight="90" MinWidth="175" MinHeight="90">
-    <Border Background="#f7f7f7" BorderBrush="#ededed" BorderThickness="1,1,1,1" CornerRadius="5,5,5,5" Margin="5">
+             d:DesignHeight="90" d:DesignWidth="175" MaxWidth="150" MaxHeight="100" MinWidth="175" MinHeight="100">
+    <Border Background="{DynamicResource PrimaryHueDarkBrush}" BorderBrush="#ededed" BorderThickness="1,1,1,1" CornerRadius="5,5,5,5" Margin="5">
         <StackPanel Orientation="Vertical">
-            <Label Content="{Binding Object.Type, Converter={conv:IntToStringConverter}}" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="{Binding Object.Type, Converter={conv:IntToStringConverter}}" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Grid Width="160" Height="35">
-                <Label FontSize="16" Content="{Binding Object.Name}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label FontSize="16" FontWeight="Bold" Content="{Binding Object.Name}" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
-            <StackPanel Orientation="Horizontal" Height="23" Background="{Binding Object.Type, Converter={conv:IntToColorConverter}}">
+            <Grid>
+                <Button HorizontalAlignment="Left" Style="{StaticResource MaterialDesignToolButton}" Command="{Binding Object.ModifyCommand}" CommandParameter="{Binding}">
+                    <materialDesign:PackIcon Kind="Tune" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                        <materialDesign:PackIcon.LayoutTransform>
+                            <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                        </materialDesign:PackIcon.LayoutTransform>
+                    </materialDesign:PackIcon>
+                </Button>
+                <Button HorizontalAlignment="Center" Style="{StaticResource MaterialDesignToolButton}" Command="{Binding Object.CopyCommand}" CommandParameter="{Binding Object}">
+                    <materialDesign:PackIcon Kind="{Binding Object.Type, Converter={conv:IntToKindConverter}}" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                        <materialDesign:PackIcon.LayoutTransform>
+                            <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                        </materialDesign:PackIcon.LayoutTransform>
+                    </materialDesign:PackIcon>
+                </Button>
+                <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolButton}" Command="{Binding Object.DeleteCommand}" CommandParameter="{Binding Key}">
+                    <materialDesign:PackIcon Kind="Close" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                        <materialDesign:PackIcon.LayoutTransform>
+                            <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                        </materialDesign:PackIcon.LayoutTransform>
+                    </materialDesign:PackIcon>
+                </Button>
+            </Grid>
+            <!--<StackPanel Orientation="Horizontal" Height="23" Background="{Binding Object.Type, Converter={conv:IntToColorConverter}}">
                 <Button Command="{Binding Object.CopyCommand}" CommandParameter="{Binding Object}" Content="Copy" Background="Transparent" Foreground="White" Width="55" BorderThickness="0"/>
                 <Button Command="{Binding Object.ModifyCommand}" CommandParameter="{Binding}" Content="Edit" Background="Transparent" Foreground="White" Width="55" BorderThickness="0"/>
                 <Button Command="{Binding Object.DeleteCommand}" CommandParameter="{Binding Key}" Content="Delete" Background="Transparent" Foreground="White" Width="55" BorderThickness="0"/>
-            </StackPanel>
+            </StackPanel>-->
         </StackPanel>
 
     </Border>

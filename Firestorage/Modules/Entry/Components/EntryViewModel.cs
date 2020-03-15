@@ -17,7 +17,7 @@ namespace Firestorage.Modules.Entry.Components
     {
 
         private FirebaseConnector _fireBaseConnector;
-        private Query _query;
+        private readonly Query _query;
 
         private EntryViewType _entryViewType = EntryViewType.Login;
         public EntryViewType EntryViewType
@@ -60,7 +60,7 @@ namespace Firestorage.Modules.Entry.Components
         #region Login
 
         RelayCommand _loginCommand;
-        public ICommand LoginCommand => _loginCommand ?? (_loginCommand = new RelayCommand(LoginCommandExecute, LoginCommandCanExecute));
+        public ICommand LoginCommand => _loginCommand ??= new RelayCommand(LoginCommandExecute, LoginCommandCanExecute);
 
         void LoginCommandExecute(object param)
         {
@@ -78,7 +78,7 @@ namespace Firestorage.Modules.Entry.Components
         #region Register
 
         RelayCommand _registerCommand;
-        public ICommand RegisterCommand => _registerCommand ?? (_registerCommand = new RelayCommand(RegisterCommandExecute, RegisterCommandCanExecute));
+        public ICommand RegisterCommand => _registerCommand ??= new RelayCommand(RegisterCommandExecute, RegisterCommandCanExecute);
 
         void RegisterCommandExecute(object param)
         {
@@ -95,7 +95,7 @@ namespace Firestorage.Modules.Entry.Components
         #region RegisterConfirm
 
         RelayCommand _registerConfirmCommand;
-        public ICommand RegisterConfirmCommand => _registerConfirmCommand ?? (_registerConfirmCommand = new RelayCommand(RegisterConfirmCommandExecute, RegisterConfirmCommandCanExecute));
+        public ICommand RegisterConfirmCommand => _registerConfirmCommand ??= new RelayCommand(RegisterConfirmCommandExecute, RegisterConfirmCommandCanExecute);
 
         void RegisterConfirmCommandExecute(object param)
         {
@@ -106,7 +106,7 @@ namespace Firestorage.Modules.Entry.Components
             }
 
             var encryptedPass = Encrypt.EncryptSHA512(((PasswordBox)param).Password);
-            var usr = new User()
+            var usr = new User
             {
                 Email = Email,
                 LastLogin = DateTime.Now,

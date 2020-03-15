@@ -5,12 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Firestorage.Modules.Main"
         xmlns:enums="clr-namespace:Firestorage.Enums"
+        Background="{DynamicResource MaterialDesignPaper}"
         xmlns:components="clr-namespace:Firestorage.Modules.Main.Components"
         mc:Ignorable="d"
         Title="Firestorage" Height="{Binding FormHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="{Binding FormWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
     <Grid>
         <StackPanel Orientation="Vertical">
-            <Grid Background="#4caf50" Height="45" Margin="0, 0, 0, 5">
+            <Label Content="Firestorage" FontSize="22" Margin="15, 0, 0, 10" VerticalAlignment="Center"/>
+            <!--<Grid Background="#673ab7" Height="45" Margin="0, 0, 0, 5">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Firestorage" Foreground="White" FontSize="25"/>
                     <Image Source="logo.png" Height="38" Width="35"/>
@@ -20,7 +22,7 @@
                         <Image Source="lock.png" Height="30" Width="30" />
                     </StackPanel>
                 </Button>
-            </Grid>
+            </Grid>-->
 
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="5">
                 <ItemsControl ItemsSource="{Binding Accounts}" MaxWidth="{Binding FormWidth, UpdateSourceTrigger=PropertyChanged}">
@@ -37,7 +39,7 @@
                 </ItemsControl>
             </StackPanel>
         </StackPanel>
-        <Button Content="Add new" Width="60" Height="35" HorizontalAlignment="Right" BorderThickness="0" Background="#4caf50" Foreground="White" VerticalAlignment="Bottom" Margin="5" Command="{Binding AddCommand}">
+        <Button Content="Add new" Width="60" Height="35" Style="{StaticResource MaterialDesignRaisedAccentButton}" HorizontalAlignment="Right" BorderThickness="0" VerticalAlignment="Bottom" Margin="10" Command="{Binding AddCommand}">
         </Button>
     </Grid>
 </Window>

@@ -1,4 +1,5 @@
-﻿using Firestorage.Noti.Enums;
+﻿using System;
+using Firestorage.Noti.Enums;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -24,7 +25,16 @@ namespace Firestorage.Noti
             QueueNoti(noti);
         }
 
-        private async static void QueueNoti(Window view)
+        public static void ShowDialog(string text)
+        {
+            Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                var dialog = new Views.DialogView();
+                dialog.ShowDialog();
+            }));
+        }
+
+        private static async void QueueNoti(Window view)
         {
             if (view != null)
             {

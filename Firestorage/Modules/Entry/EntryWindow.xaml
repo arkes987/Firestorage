@@ -5,15 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Firestorage.Modules.Entry.Components"
         xmlns:conv="clr-namespace:Firestorage.Converters"
+        Background="{DynamicResource MaterialDesignPaper}"
         xmlns:enums="clr-namespace:Firestorage.Enums"
         mc:Ignorable="d"
         Title="Firestorage" Height="260" Width="550" ResizeMode="NoResize" Visibility="{Binding IsVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}" WindowStartupLocation="CenterScreen">
     <Grid>
         <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Label Content="Firestorage" FontSize="25" VerticalAlignment="Center"/>
-                <Image Source="/Firestorage;component/Modules/Main/logo.png" Width="45" Height="50" VerticalAlignment="Center"/>
-            </StackPanel>
+            <Label Content="Firestorage" FontSize="22" Margin="15, 0, 0, 10" VerticalAlignment="Center"/>
 
             <controls:Login Visibility="{Binding EntryViewType, Converter={conv:EnumToVisibilityConverter}, ConverterParameter={x:Static enums:EntryViewType.Login}}"/>
             <controls:Register Visibility="{Binding EntryViewType, Converter={conv:EnumToVisibilityConverter}, ConverterParameter={x:Static enums:EntryViewType.Register}}" />

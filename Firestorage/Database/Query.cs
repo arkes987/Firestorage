@@ -10,7 +10,7 @@ namespace Firestorage.Database
 {
     public class Query
     {
-        private FirebaseConnector _connection;
+        private readonly FirebaseConnector _connection;
         public Query(FirebaseConnector connection)
         {
             _connection = connection;
@@ -45,7 +45,7 @@ namespace Firestorage.Database
 
         public void ObserveCollection<T>(Action<FirebaseEvent<T>> callback, string userOwnerKey)
         {
-            var result = _connection.Instance.Child(typeof(T).Name).OrderBy("OwnerUserId").EqualTo(userOwnerKey).AsObservable<T>().Subscribe(obj => callback(obj));
+            var result = _connection.Instance.Child(typeof(T).Name).OrderBy("OwnerUserId").EqualTo(userOwnerKey).AsObservable<T>().Subscribe(callback);
         }
 
         public async void DeleteByKey<T>(string key)

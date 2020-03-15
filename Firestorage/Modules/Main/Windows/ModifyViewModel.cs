@@ -35,7 +35,7 @@ namespace Firestorage.Modules.Main.Windows
         #region Save
 
         RelayCommand _saveCommand;
-        public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(SaveCommandExecute, SaveCommandCanExecute));
+        public ICommand SaveCommand => _saveCommand ??= new RelayCommand(SaveCommandExecute, SaveCommandCanExecute);
 
         void SaveCommandExecute(object param)
         {
@@ -65,7 +65,7 @@ namespace Firestorage.Modules.Main.Windows
         #region Generate
 
         RelayCommand _generateCommand;
-        public ICommand GenerateCommand => _generateCommand ?? (_generateCommand = new RelayCommand(GenerateCommandExecute, GenerateCommandCanExecute));
+        public ICommand GenerateCommand => _generateCommand ??= new RelayCommand(GenerateCommandExecute, GenerateCommandCanExecute);
 
         void GenerateCommandExecute(object param)
         {
