@@ -1,23 +1,18 @@
-﻿using Firestorage.Database;
-using Firestorage.Database.Structure;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Linq;
-using System.Windows;
-using Firestorage.Modules.Main;
-using System;
-using Firestorage.Crypto;
-using System.Windows.Controls;
+﻿using Firestorage.Core;
+using Firestorage.Database;
 using Firestorage.Enums;
-using Firestorage.Core;
+using Firestorage.Modules.Main;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Firestorage.Modules.Entry.Components
 {
     public class EntryViewModel : NotifyObject
     {
-
-        private FirebaseConnector _fireBaseConnector;
-        private readonly Query _query;
+        private Query _query;
+        private readonly FirebaseConnector _fireBaseConnector;
 
         private EntryViewType _entryViewType = EntryViewType.Login;
         public EntryViewType EntryViewType
@@ -48,13 +43,11 @@ namespace Firestorage.Modules.Entry.Components
 
         public string Email { get; set; } = "arkkin@icloud.com";
 
-        public string Password { get; set; }
 
 
         public EntryViewModel()
         {
             _fireBaseConnector = new FirebaseConnector();
-            _query = new Query(_fireBaseConnector);
         }
 
         #region Login
@@ -62,10 +55,9 @@ namespace Firestorage.Modules.Entry.Components
         RelayCommand _loginCommand;
         public ICommand LoginCommand => _loginCommand ??= new RelayCommand(LoginCommandExecute, LoginCommandCanExecute);
 
-        void LoginCommandExecute(object param)
+        async void LoginCommandExecute(object param)
         {
-            var encryptedPass = Encrypt.EncryptSHA512(((PasswordBox)param).Password);
-            TryAuthenticateUser(encryptedPass);
+            await TryAuthenticateUser(((PasswordBox)param).Password);
         }
 
         bool LoginCommandCanExecute(object param)
@@ -97,7 +89,7 @@ namespace Firestorage.Modules.Entry.Components
         RelayCommand _registerConfirmCommand;
         public ICommand RegisterConfirmCommand => _registerConfirmCommand ??= new RelayCommand(RegisterConfirmCommandExecute, RegisterConfirmCommandCanExecute);
 
-        void RegisterConfirmCommandExecute(object param)
+        async void RegisterConfirmCommandExecute(object param)
         {
             if (string.IsNullOrEmpty(((PasswordBox)param).Password))
             {
@@ -105,19 +97,8 @@ namespace Firestorage.Modules.Entry.Components
                 return;
             }
 
-            var encryptedPass = Encrypt.EncryptSHA512(((PasswordBox)param).Password);
-            var usr = new User
-            {
-                Email = Email,
-                LastLogin = DateTime.Now,
-                MasterPass = encryptedPass,
-                PasswordTryCount = 0,
-                SaveDate = DateTime.Now
-            };
+            await TryRegisterUser(((PasswordBox)param).Password);
 
-            _query.Add(usr);
-
-            TryAuthenticateUser(encryptedPass);
         }
 
         bool RegisterConfirmCommandCanExecute(object param)
@@ -127,35 +108,54 @@ namespace Firestorage.Modules.Entry.Components
 
         #endregion
 
-        private void TryAuthenticateUser(string encryptedPswd)
+        private async Task TryAuthenticateUser(string password)
         {
-            Task.Factory.StartNew(() =>
+            if (_fireBaseConnector != null)
             {
-                var user = _query.GetByEmail<User>(Email).Result;
+                var authResult = await _fireBaseConnector?.Authenticate(Email, password);
 
-                if (user.Count > 0)
+                if (authResult != null)
                 {
-                    var myUser = user.ElementAt(0);
-                    if (myUser.Object.MasterPass == encryptedPswd)
+                    _query = new Query(_fireBaseConnector);
+
+                    Application.Current.Dispatcher.Invoke(delegate
                     {
-                        Application.Current.Dispatcher.Invoke(delegate
-                        {
-                            var mainWindow = new MainWindow(myUser.Key);
-                            mainWindow.Show();
-                            IsVisible = false;
-                            EntryViewType = EntryViewType.Login;
-                        });
-                    }
-                    else
-                    {
-                        MessageBox.Show("Wrong password.");
-                    }
+                        var mainWindow = new MainWindow(authResult, _fireBaseConnector);
+                        mainWindow.Show();
+                        IsVisible = false;
+                        EntryViewType = EntryViewType.Login;
+                    });
                 }
                 else
                 {
-                    MessageBox.Show("User not found.");
+                    MessageBox.Show("Wrong password.");
                 }
-            });
+            }
+        }
+
+        private async Task TryRegisterUser(string password)
+        {
+            if (_fireBaseConnector != null)
+            {
+                var authResult = await _fireBaseConnector?.Register(Email, password);
+
+                if (authResult != null)
+                {
+                    _query = new Query(_fireBaseConnector);
+
+                    Application.Current.Dispatcher.Invoke(delegate
+                    {
+                        var mainWindow = new MainWindow(authResult, _fireBaseConnector);
+                        mainWindow.Show();
+                        IsVisible = false;
+                        EntryViewType = EntryViewType.Login;
+                    });
+                }
+                else
+                {
+                    MessageBox.Show("Wrong password.");
+                }
+            }
         }
     }
 }

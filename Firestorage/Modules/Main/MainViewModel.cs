@@ -1,23 +1,22 @@
 ﻿using Firebase.Database;
 using Firebase.Database.Streaming;
+using Firestorage.Core;
+using Firestorage.Crypto;
 using Firestorage.Database;
 using Firestorage.Database.Structure;
+using Firestorage.Enums;
 using Firestorage.Modules.Main.Windows;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows;
 using System.Linq;
-using Firestorage.Crypto;
 using System.Threading;
-using Firestorage.Enums;
-using Firestorage.Core;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Firestorage.Modules.Main
 {
     public class MainViewModel : NotifyObject
     {
-        private readonly FirebaseConnector _fireBaseConnector;
         private readonly ProtectDataEngine _protectDataEngine;
         private readonly Query _query;
         private readonly string _userId;
@@ -60,14 +59,13 @@ namespace Firestorage.Modules.Main
             }
         }
 
-        public MainViewModel(string userId)
+        public MainViewModel(string userId, FirebaseConnector firebaseConnector)
         {
             Accounts = new ObservableCollection<FirebaseObject<Account>>();
-            _fireBaseConnector = new FirebaseConnector();
-            _query = new Query(_fireBaseConnector);
+            _query = new Query(firebaseConnector);
             _userId = userId;
             _protectDataEngine = new ProtectDataEngine(_userId);
-            _query.ObserveCollection<Account>(FetchAccountFromServer, _userId);
+             _query.ObserveCollection<Account>(FetchAccountFromServer, _userId);
         }
 
         public void FetchAccountFromServer(FirebaseEvent<Account> recivedEvent)

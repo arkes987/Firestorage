@@ -89,7 +89,6 @@ namespace Firestorage.Modules.Main.Windows
         }
 
 
-
         public PasswordGeneratorViewModel(ref string input)
         {
 

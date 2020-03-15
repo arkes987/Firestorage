@@ -10,10 +10,10 @@ namespace Firestorage.Modules.Main.Windows
 {
     public class ModifyViewModel : NotifyObject
     {
-        private Query _query;
+        private readonly Query _query;
         private readonly string _key;
         private readonly string _userId;
-        private ProtectDataEngine _protectDataEngine;
+        private readonly ProtectDataEngine _protectDataEngine;
         public Account Account { get; set; }
         public ModifyViewModel(Query query, string key, Account account, string userId, ProtectDataEngine protectDataEngine)
         {

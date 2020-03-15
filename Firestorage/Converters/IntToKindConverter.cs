@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Firestorage.Converters
 {
@@ -12,10 +10,10 @@ namespace Firestorage.Converters
 
             return type switch
             {
-                1 => "Password",
+                1 => "Fingerprint",
                 2 => "File",
-                3 => "Note",
-                _ => "Fingerprint",
+                3 => "Notebook",
+                _ => "Account",
             };
         }
 
@@ -25,5 +23,3 @@ namespace Firestorage.Converters
         }
     }
 }
-
-//file-cog
